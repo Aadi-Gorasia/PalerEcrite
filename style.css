@@ -1,0 +1,164 @@
+/* --- IMPORTS & VARS --- */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;900&family=Syne:wght@400;700;800&family=Space+Grotesk:wght@300;700&display=swap');
+
+:root {
+    --bg: #e8e6e1;
+    --ink: #050505;
+    --accent: #ff3300;
+}
+
+/* --- RESET & CORE --- */
+* { box-sizing: border-box; cursor: none; /* Global cursor hide */ }
+
+body {
+    background-color: var(--bg);
+    color: var(--ink);
+    font-family: 'Syne', sans-serif;
+    margin: 0;
+    overflow-x: hidden;
+    width: 100%;
+}
+
+::selection { background: var(--accent); color: var(--ink); }
+
+/* --- NOISE OVERLAY --- */
+.noise-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none; z-index: 9990; opacity: 0.05;
+    background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyBAMAAADsEZWCAAAAGFBMVEUAAAA5OTkAAABMTExERERmZmYzMzMyMjJlRPOqAAAACHRSTlMAMwAozDt3VH1g748AAABcSURBVDjLY2AYBaNgKLNt27ZGZxD227ZtmzVDMO737NlzDCNF9uzZczQjRfbQ0NBjDCPl0NDQY0hGgbyhoSEQIzQ0NIQRQo2gAmYgRjZCaGgoI0V2KChkGCkAAA21Th3XU61eAAAAAElFTkSuQmCC');
+}
+
+/* --- TYPOGRAPHY --- */
+.font-serif { font-family: 'Cinzel', serif; }
+.font-mono { font-family: 'Space Grotesk', monospace; }
+
+/* Brutalist Text Stroke */
+.text-stroke { -webkit-text-stroke: 1px var(--ink); color: transparent; transition: 0.2s; }
+.text-stroke:hover { color: var(--ink); -webkit-text-stroke: 0px; }
+
+.text-stroke-white { -webkit-text-stroke: 1px var(--bg); color: transparent; transition: 0.2s; }
+.text-stroke-white:hover { color: var(--bg); -webkit-text-stroke: 0px; }
+
+/* --- CURSOR SYSTEM --- */
+
+/* 1. The Precision Dot (Always stays on mouse) */
+#cursor-dot {
+    position: fixed;
+    top: 0; left: 0;
+    width: 6px; height: 6px;
+    background-color: var(--accent); /* Red */
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 10001; /* Above the ring */
+}
+
+/* 2. The Heavy Ring (Follows with weight) */
+#cursor-ring {
+    position: fixed;
+    top: 0; left: 0;
+    width: 40px; height: 40px;
+    border: 2px solid white; /* Black Stroke */
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 10000;
+    
+    /* Smooth transitions for hover states */
+    transition: width 0.3s cubic-bezier(0.25, 1, 0.5, 1),
+                height 0.3s cubic-bezier(0.25, 1, 0.5, 1),
+                background-color 0.3s,
+                border-color 0.3s;
+                
+    /* This makes it visible over dark backgrounds */
+    mix-blend-mode: difference; 
+}
+
+/* --- HOVER STATES --- */
+
+/* When hovering links: Ring expands and fills */
+body.hovering #cursor-ring {
+    width: 80px;
+    border-radius: 20px;
+    background-color: rgb(0, 0, 0); /* Fill with white */
+    border-color: transparent; /* Remove border */
+    mix-blend-mode: normal; /* Reset blend mode so we can see text inside */
+    opacity: 0.9;
+}
+
+/* When hovering links: Hide the red dot so it doesn't look messy */
+body.hovering #cursor-dot {
+    opacity: 0;
+}
+
+/* Optional: Text inside the ring (If you still want the text labels) */
+#cursor-ring::after {
+    content: attr(data-text); /* We will set this via JS */
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    color: rgb(255, 255, 255);
+    font-size: 10px;
+    font-weight: 800;
+    font-family: 'Space Grotesk', sans-serif;
+    text-transform: uppercase;
+    opacity: 0;
+    white-space: nowrap;
+    transition: opacity 0.2s;
+}
+
+body.hovering #cursor-ring::after {
+    opacity: 1;
+}
+
+/* --- GLOBAL GRIDLINES --- */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1; /* sits above bg but below content */
+    background-image:
+        linear-gradient(to right, rgba(0,0,0,0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0,0,0,0.05) 1px, transparent 1px);
+    background-size: 20px 20px;
+}
+
+
+/* HOVER STATE: The Tag */
+body.hovering #cursor { 
+    width: auto; height: auto; 
+    min-width: 10px; min-height: 10px;
+    transform: translate(-50%, -50%) rotate(0deg); /* Reset rotation to flat square */
+    background: transparent;
+    border: 1px solid var(--accent); /* Technical look */
+}
+
+body.hovering #cursor-text { 
+    opacity: 1; 
+    background: var(--accent);
+    color: #000;
+    transform: rotate(0deg); 
+}
+
+/* --- TRANSITIONS --- */
+.page-transition {
+    position: fixed; inset: 0; background: var(--ink); z-index: 9995;
+    transform: scaleY(0); transform-origin: bottom;
+}
+
+/* --- UTILS --- */
+.clip-text-image {
+    background-clip: text; -webkit-background-clip: text;
+    color: transparent; background-image: url('https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2070&auto=format&fit=crop');
+    background-size: cover; background-position: center;
+}
+
+/* SCROLLBAR HIDE */
+::-webkit-scrollbar { width: 0px; background: transparent; }
+
+/* LENIS */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }

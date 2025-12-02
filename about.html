@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PALER ECRITE | MANIFESTO</title>
+    <link rel="icon" href="logo.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-[#050505] text-[#e8e6e1] antialiased">
+
+    <div class="noise-overlay"></div>
+    <div class="page-transition"></div>
+    <div id="cursor-dot"></div>
+<div id="cursor-ring"></div>
+    
+    <nav class="fixed top-0 w-full p-8 flex justify-between mix-blend-difference z-50">
+        <a href="index.html" class="font-black text-2xl scramble-hover">PE.</a>
+        <a href="menu.html" class="font-bold font-mono">MENU</a>
+    </nav>
+
+    <!-- HEADER -->
+    <section class="h-screen flex items-center justify-center relative overflow-hidden">
+        <h1 class="text-[25vw] font-black opacity-5 absolute rotate-6 text-stroke">CHAOS</h1>
+        <div class="z-10 text-center max-w-5xl px-4">
+            <p class="text-xs font-mono text-[#ff3300] mb-6 reveal">THE ORIGIN STORY</p>
+            <h2 class="text-5xl md:text-8xl font-serif italic leading-tight reveal">
+                "We didn't start a company. We started a <span class="text-[#ff3300] scramble-hover">riot</span>."
+            </h2>
+        </div>
+    </section>
+
+    <!-- MANIFESTO SCROLL -->
+    <section class="py-40 px-4 md:px-20 relative border-t border-white/10">
+        <div class="max-w-4xl mx-auto space-y-40">
+            <!-- Block 1 -->
+            <div class="flex flex-col md:flex-row gap-12 reveal">
+                <div class="text-[#ff3300] font-mono text-xl">01.</div>
+                <div>
+                    <h3 class="text-4xl md:text-6xl font-black mb-6 uppercase">The Problem</h3>
+                    <p class="text-xl md:text-2xl text-gray-400 leading-relaxed">
+                        Modern publishing is dead. It is a zombie shuffling through airports selling books written by AI or celebrities who can't read.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Block 2 -->
+            <div class="flex flex-col md:flex-row gap-12 reveal">
+                <div class="text-[#ff3300] font-mono text-xl">02.</div>
+                <div>
+                    <h3 class="text-4xl md:text-6xl font-black mb-6 uppercase">The Solution</h3>
+                    <p class="text-xl md:text-2xl text-gray-400 leading-relaxed">
+                        We print dangerous things. We don't edit the soul out of the work. If it bleeds, we print it.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Block 3 -->
+            <div class="flex flex-col md:flex-row gap-12 reveal">
+                <div class="text-[#ff3300] font-mono text-xl">03.</div>
+                <div>
+                    <h3 class="text-4xl md:text-6xl font-black mb-6 uppercase">The Future</h3>
+                    <p class="text-xl md:text-2xl text-gray-400 leading-relaxed">
+                        Ink is forever. Servers crash. Clouds evaporate. We make physical artifacts for the end of the world.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- BIG TEXT FOOTER -->
+    <section class="h-[60vh] flex items-center justify-center">
+        <h2 class="text-[12vw] font-black leading-none text-center hover:text-[#ff3300] transition-colors duration-500 cursor-pointer" data-cursor="FOREVER">
+            ETERNAL<br>INK.
+        </h2>
+    </section>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>

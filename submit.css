@@ -1,0 +1,27 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@400;700&display=swap');
+
+body {
+    background: #e8e6e1; cursor: none; font-family: 'Space Grotesk', sans-serif;
+}
+/* CURSOR (Reuse Pill Logic) */
+#cursor {
+    position: fixed; top: 0; left: 0; width: 20px; height: 20px; background: black; border-radius: 50%;
+    transform: translate(-50%, -50%); pointer-events: none; z-index: 9999; mix-blend-mode: exclusion;
+    display: flex; align-items: center; justify-content: center; transition: all 0.2s;
+}
+#cursor-text { color: white; opacity: 0; font-size: 10px; font-weight: bold; }
+body.hovering #cursor { width: 80px; height: 30px; border-radius: 20px; }
+body.hovering #cursor-text { opacity: 1; }
+
+/* FORM STYLES */
+.input-group { position: relative; display: flex; flex-direction: column; }
+label { font-size: 10px; font-weight: bold; letter-spacing: 2px; margin-bottom: 10px; color: #ff3300; }
+input, textarea {
+    background: transparent; border: none; border-bottom: 2px solid #000;
+    font-family: 'Anton', sans-serif; font-size: 3vw; color: #050505;
+    outline: none; padding-bottom: 10px;;
+    transition: border-color 0.3s;
+}
+
+input:focus, textarea:focus { border-bottom-color: #ff3300;}
+input::placeholder, textarea::placeholder { color: #ccc; -webkit-text-stroke: 1px #ccc; color: transparent; }

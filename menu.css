@@ -1,0 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;800&display=swap');
+
+body {
+    margin: 0;
+    overflow: hidden; /* Menu doesn't scroll */
+    cursor: none;
+    font-family: 'Syne', sans-serif;
+}
+
+/* PILL CURSOR */
+#cursor {
+    position: fixed; top: 0; left: 0; width: 20px; height: 20px;
+    background: white; border-radius: 50%;
+    transform: translate(-50%, -50%); pointer-events: none; z-index: 9999;
+    display: flex; align-items: center; justify-content: center;
+    mix-blend-mode: exclusion;
+    transition: width 0.3s, height 0.3s;
+}
+#cursor-text {
+    font-size: 10px; font-weight: 800; text-transform: uppercase; opacity: 0;
+}
+body.hovering #cursor { width: 100px; height: 32px; border-radius: 50px; }
+body.hovering #cursor-text { opacity: 1; color: black; }
+
+/* MENU HOVER EFFECT */
+.menu-item a {
+    color: transparent;
+    -webkit-text-stroke: 2px white;
+    transition: all 0.3s;
+}
+.menu-item:hover a {
+    color: white;
+    -webkit-text-stroke: 0px;
+    font-style: italic;
+    letter-spacing: 0.05em;
+}

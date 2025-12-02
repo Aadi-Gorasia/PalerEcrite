@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PALER ECRITE | MENU</title>
+    <link rel="icon" href="logo.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Links to the global styles -->
+    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        /* Specific Menu Hover Effects */
+        .menu-link { 
+            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            -webkit-text-stroke: 1px #e8e6e1; 
+            color: transparent;
+        }
+        .menu-link:hover { 
+            -webkit-text-stroke: 0px; 
+            color: white; 
+            letter-spacing: 5px; 
+            font-style: italic;
+        }
+        
+        /* Ensure cursor ring is visible on dark bg */
+        #cursor-ring { mix-blend-mode: exclusion; }
+    </style>
+</head>
+<body class="antialiased overflow-hidden">
+    
+    <!-- NEW CURSOR SYSTEM (Must match main.js) -->
+    <div id="cursor-dot"></div>
+    <div id="cursor-ring"></div>
+
+    <div class="noise-overlay"></div>
+    <div class="page-transition"></div>
+
+    <!-- CLOSE BUTTON -->
+    <a href="index.html" class="fixed top-8 right-8 mix-blend-difference text-white z-50 text-xl font-bold font-mono" data-cursor="CLOSE">
+        [ESC]
+    </a>
+
+    <main class="h-screen w-full flex items-center justify-center relative bg-[#050505]">
+        <ul class="flex flex-col items-center justify-center gap-2 z-10 mix-blend-difference text-[#e8e6e1]">
+            <li class="relative group">
+                <span class="absolute -left-12 top-6 text-xs font-mono text-[#ff3300] opacity-0 group-hover:opacity-100 transition-opacity">01</span>
+                <!-- Added 'menu-link' class and data attributes -->
+                <a href="index.html" class="menu-link text-[10vw] font-black uppercase leading-[0.8]" data-bg="#050505" data-cursor="HOME">Home</a>
+            </li>
+            <li class="relative group">
+                <span class="absolute -left-12 top-6 text-xs font-mono text-[#ff3300] opacity-0 group-hover:opacity-100 transition-opacity">02</span>
+                <a href="about.html" class="menu-link text-[10vw] font-black uppercase leading-[0.8]" data-bg="#ff3300" data-cursor="TRUTH">About</a>
+            </li>
+            <li class="relative group">
+                <span class="absolute -left-12 top-6 text-xs font-mono text-[#ff3300] opacity-0 group-hover:opacity-100 transition-opacity">03</span>
+                <a href="submit.html" class="menu-link text-[10vw] font-black uppercase leading-[0.8]" data-bg="#e8e6e1" data-cursor="BLEED">Submit</a>
+            </li>
+        </ul>
+        
+        <!-- DYNAMIC BACKGROUND -->
+        <div id="bg-layer" class="absolute inset-0 bg-[#050505] transition-colors duration-700 ease-out z-0"></div>
+    </main>
+
+    <!-- Global Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
+    
+    <!-- Main JS handles the Cursor and Transitions -->
+    <script src="main.js"></script>
+
+    <!-- Local Script (ONLY handles Background Color changes) -->
+    <script>
+        const bgLayer = document.getElementById('bg-layer');
+        
+        // We don't need cursor logic here because main.js handles it.
+        // We only listen for hover to change the background color.
+        document.querySelectorAll('[data-bg]').forEach(link => {
+            link.addEventListener('mouseenter', () => {
+                bgLayer.style.backgroundColor = link.getAttribute('data-bg');
+            });
+            link.addEventListener('mouseleave', () => {
+                bgLayer.style.backgroundColor = '#050505';
+            });
+        });
+    </script>
+</body>
+</html>
