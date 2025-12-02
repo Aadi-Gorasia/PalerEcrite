@@ -46,15 +46,3 @@ Replaced the default system cursor with a **dual-layer reticle system**:
 *   **Page Transitions:** A "curtain" effect wipes the screen vertically between page navigations for a seamless Single-Page-Application (SPA) feel.
 
 ---
-
-## 📂 FILE STRUCTURE
-
-```bash
-PALER-ECRITE/
-├── index.html       # Landing Page (Light Mode)
-├── about.html       # Manifesto (Dark Mode)
-├── menu.html        # Navigation Hub
-├── submit.html      # Submission Form
-├── style.css        # UNIFIED Global Styles (Cursor, Noise, Typography)
-├── main.js          # UNIFIED Logic (Physics, GSAP, Page Transitions)
-└── assets/          # Folder for your images
