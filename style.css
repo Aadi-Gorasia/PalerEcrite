@@ -162,3 +162,24 @@ html.lenis, html.lenis body { height: auto; }
 .lenis.lenis-smooth { scroll-behavior: auto !important; }
 .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
 .lenis.lenis-stopped { overflow: hidden; }
+
+/* ... [KEEP ALL YOUR EXISTING CSS ABOVE] ... */
+
+/* --- MOBILE / RESPONSIVE FIXES --- */
+
+/* 1. HIDE CUSTOM CURSOR ON TOUCH DEVICES */
+@media (hover: none) and (pointer: coarse) {
+    #cursor-dot, #cursor-ring, #cursor-ring::after {
+        display: none !important;
+    }
+    * {
+        cursor: auto !important; /* Restore default touch interaction */
+    }
+}
+
+/* 2. ADJUST GRID ON MOBILE */
+@media (max-width: 768px) {
+    body::before {
+        background-size: 10px 10px; /* Tighter grid on mobile */
+    }
+}
