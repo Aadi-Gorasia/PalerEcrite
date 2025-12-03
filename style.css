@@ -15,9 +15,23 @@ body {
     color: var(--ink);
     font-family: 'Syne', sans-serif;
     margin: 0;
-    overflow-x: hidden;
+    overflow-x: hidden; /* Prevent side scroll */
     width: 100%;
 }
+
+/* --- GLOBAL GRIDLINES (SUBTLE & CLEAN) --- */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1; /* stays under everything except noise */
+    background-image:
+        linear-gradient(to right, rgba(5, 5, 5, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(5, 5, 5, 0.05) 1px, transparent 1px);
+    background-size: 20px 20px;
+}
+
 
 ::selection { background: var(--accent); color: var(--ink); }
 
@@ -32,154 +46,82 @@ body {
 .font-serif { font-family: 'Cinzel', serif; }
 .font-mono { font-family: 'Space Grotesk', monospace; }
 
-/* Brutalist Text Stroke */
 .text-stroke { -webkit-text-stroke: 1px var(--ink); color: transparent; transition: 0.2s; }
 .text-stroke:hover { color: var(--ink); -webkit-text-stroke: 0px; }
 
 .text-stroke-white { -webkit-text-stroke: 1px var(--bg); color: transparent; transition: 0.2s; }
 .text-stroke-white:hover { color: var(--bg); -webkit-text-stroke: 0px; }
 
-/* --- CURSOR SYSTEM --- */
+/* --- CURSOR SYSTEM (Restored) --- */
 
-/* 1. The Precision Dot (Always stays on mouse) */
 #cursor-dot {
-    position: fixed;
-    top: 0; left: 0;
+    position: fixed; top: 0; left: 0;
     width: 6px; height: 6px;
-    background-color: var(--accent); /* Red */
+    background-color: var(--accent);
     border-radius: 50%;
     transform: translate(-50%, -50%);
-    pointer-events: none;
-    z-index: 10001; /* Above the ring */
+    pointer-events: none; z-index: 10001;
 }
 
-/* 2. The Heavy Ring (Follows with weight) */
 #cursor-ring {
-    position: fixed;
-    top: 0; left: 0;
+    position: fixed; top: 0; left: 0;
     width: 40px; height: 40px;
-    border: 2px solid white; /* Black Stroke */
+    border: 2px solid white; /* Dark stroke for contrast */
     border-radius: 50%;
     transform: translate(-50%, -50%);
-    pointer-events: none;
-    z-index: 10000;
-    
-    /* Smooth transitions for hover states */
-    transition: width 0.3s cubic-bezier(0.25, 1, 0.5, 1),
-                height 0.3s cubic-bezier(0.25, 1, 0.5, 1),
-                background-color 0.3s,
-                border-color 0.3s;
-                
-    /* This makes it visible over dark backgrounds */
+    pointer-events: none; z-index: 10000;
+    transition: width 0.3s, height 0.3s, background-color 0.3s, border-color 0.3s, opacity 0.3s;
     mix-blend-mode: difference; 
 }
 
-/* --- HOVER STATES --- */
-
-/* When hovering links: Ring expands and fills */
+/* Hover States */
 body.hovering #cursor-ring {
     width: 80px;
     border-radius: 20px;
-    background-color: rgb(0, 0, 0); /* Fill with white */
-    border-color: transparent; /* Remove border */
-    mix-blend-mode: normal; /* Reset blend mode so we can see text inside */
+    background-color: #e8e6e1; 
+    border-color: transparent;
+    mix-blend-mode: normal; 
     opacity: 0.9;
 }
 
-/* When hovering links: Hide the red dot so it doesn't look messy */
-body.hovering #cursor-dot {
-    opacity: 0;
-}
+body.hovering #cursor-dot { opacity: 0; }
 
-/* Optional: Text inside the ring (If you still want the text labels) */
 #cursor-ring::after {
-    content: attr(data-text); /* We will set this via JS */
-    position: absolute;
-    top: 50%; left: 50%;
+    content: attr(data-text);
+    position: absolute; top: 50%; left: 50%;
     transform: translate(-50%, -50%);
-    color: rgb(255, 255, 255);
-    font-size: 10px;
-    font-weight: 800;
+    color: black;
+    font-size: 10px; font-weight: 800;
     font-family: 'Space Grotesk', sans-serif;
     text-transform: uppercase;
-    opacity: 0;
-    white-space: nowrap;
+    opacity: 0; white-space: nowrap;
     transition: opacity 0.2s;
 }
 
-body.hovering #cursor-ring::after {
-    opacity: 1;
-}
+body.hovering #cursor-ring::after { opacity: 1; }
 
-/* --- GLOBAL GRIDLINES --- */
-body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 1; /* sits above bg but below content */
-    background-image:
-        linear-gradient(to right, rgba(0,0,0,0.05) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(0,0,0,0.05) 1px, transparent 1px);
-    background-size: 20px 20px;
-}
-
-
-/* HOVER STATE: The Tag */
-body.hovering #cursor { 
-    width: auto; height: auto; 
-    min-width: 10px; min-height: 10px;
-    transform: translate(-50%, -50%) rotate(0deg); /* Reset rotation to flat square */
-    background: transparent;
-    border: 1px solid var(--accent); /* Technical look */
-}
-
-body.hovering #cursor-text { 
-    opacity: 1; 
-    background: var(--accent);
-    color: #000;
-    transform: rotate(0deg); 
-}
-
-/* --- TRANSITIONS --- */
+/* --- UTILS --- */
 .page-transition {
     position: fixed; inset: 0; background: var(--ink); z-index: 9995;
     transform: scaleY(0); transform-origin: bottom;
 }
 
-/* --- UTILS --- */
-.clip-text-image {
-    background-clip: text; -webkit-background-clip: text;
-    color: transparent; background-image: url('https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2070&auto=format&fit=crop');
-    background-size: cover; background-position: center;
-}
-
-/* SCROLLBAR HIDE */
 ::-webkit-scrollbar { width: 0px; background: transparent; }
 
-/* LENIS */
 html.lenis, html.lenis body { height: auto; }
 .lenis.lenis-smooth { scroll-behavior: auto !important; }
 .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
 .lenis.lenis-stopped { overflow: hidden; }
 
-/* ... [KEEP ALL YOUR EXISTING CSS ABOVE] ... */
+/* --- MOBILE SAFETY FIXES --- */
 
-/* --- MOBILE / RESPONSIVE FIXES --- */
-
-/* 1. HIDE CUSTOM CURSOR ON TOUCH DEVICES */
-@media (hover: none) and (pointer: coarse) {
-    #cursor-dot, #cursor-ring, #cursor-ring::after {
-        display: none !important;
-    }
-    * {
-        cursor: auto !important; /* Restore default touch interaction */
-    }
+/* 1. Hide Cursor on Screens Smaller than 1024px (Tablets/Phones) */
+@media (max-width: 1024px) {
+    #cursor-dot, #cursor-ring { display: none !important; }
+    * { cursor: auto !important; } /* Restore system cursor */
 }
 
-/* 2. ADJUST GRID ON MOBILE */
+/* 2. Mobile Grid Adjustment */
 @media (max-width: 768px) {
-    body::before {
-        background-size: 10px 10px; /* Tighter grid on mobile */
-    }
+    body::before { background-size: 10px 10px; }
 }
