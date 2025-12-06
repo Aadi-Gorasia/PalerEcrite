@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PALER ECRITE | SUSPECT PROFILE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="logo.png" type="image/x-icon">
+</head>
+<body class="antialiased overflow-x-hidden bg-[#e8e6e1]">
+
+    <!-- LAYERS -->
+    <div class="noise-overlay"></div>
+    <div class="page-transition"></div>
+    <div id="cursor-dot"></div>
+    <div id="cursor-ring"></div>
+
+    <!-- NAV -->
+    <nav class="fixed top-0 w-full px-4 md:px-8 py-6 flex justify-between items-center z-50 mix-blend-exclusion text-white">
+        <a href="index.html" class="text-2xl md:text-3xl font-black tracking-tighter scramble-hover" data-cursor="EXIT">PE.</a>
+        <a href="authors.html" class="text-xs font-bold uppercase tracking-widest font-mono" data-cursor="BACK">[ SYNDICATE ]</a>
+    </nav>
+
+    <main class="min-h-screen pt-32 pb-20 px-4 md:px-12">
+        
+        <div id="profile-wrapper" class="max-w-7xl mx-auto opacity-0 transition-opacity duration-1000">
+            
+            <!-- IDENTITY HEADER -->
+            <div class="border-b-4 border-black pb-8 mb-12 flex flex-col md:flex-row justify-between items-end">
+                <div>
+                    <span class="font-mono text-[#ff3300] text-xs font-bold tracking-widest mb-2 block">SUBJECT IDENTITY</span>
+                    <h1 id="profile-name" class="text-[8vw] md:text-[6vw] leading-[0.85] font-black uppercase text-[#050505] break-words">
+                        LOADING...
+                    </h1>
+                </div>
+                <div class="text-right font-mono text-xs font-bold mt-8 md:mt-0">
+                    <div id="profile-rank" class="bg-black text-white px-2 py-1 mb-1 inline-block">CALCULATING RANK...</div>
+                    <div id="profile-status" class="text-[#ff3300]">STATUS: ACTIVE</div>
+                </div>
+            </div>
+
+            <!-- DOSSIER GRID -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24">
+                
+                <!-- LEFT: STATS (The "Bio") -->
+                <aside class="lg:col-span-4">
+                    <div class="sticky top-32 space-y-8">
+                        
+                        <!-- Auto-Generated Bio -->
+                        <div class="prose font-serif text-lg leading-relaxed">
+                            <p id="generated-bio">
+                                Accessing criminal records...
+                            </p>
+                        </div>
+
+                        <!-- Data Points -->
+                        <div class="border-t border-black pt-6 grid grid-cols-2 gap-8 font-mono text-xs font-bold">
+                            <div>
+                                <span class="block text-gray-500 mb-1">FIRST SIGHTING</span>
+                                <span id="stat-first">...</span>
+                            </div>
+                            <div>
+                                <span class="block text-gray-500 mb-1">PRIMARY SECTOR</span>
+                                <span id="stat-genre">...</span>
+                            </div>
+                            <div>
+                                <span class="block text-gray-500 mb-1">TOTAL RECORDS</span>
+                                <span id="stat-count">0</span>
+                            </div>
+                            <div>
+                                <span class="block text-gray-500 mb-1">CLEARANCE</span>
+                                <span class="text-[#ff3300]">LEVEL 4</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </aside>
+
+                <!-- RIGHT: EVIDENCE (List of Stories) -->
+                <div class="lg:col-span-8">
+                    <h3 class="font-mono text-xs font-bold tracking-widest mb-8 border-b border-gray-400 pb-2">CONFIRMED TRANSMISSIONS</h3>
+                    
+                    <div id="profile-list" class="flex flex-col">
+                        <!-- JS INJECTS STORIES HERE -->
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <!-- SCRIPTS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
+    <script src="main.js"></script>
+    <script src="cms.js"></script>
+    
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            if(typeof loadProfile === 'function') loadProfile();
+        });
+    </script>
+</body>
+</html>

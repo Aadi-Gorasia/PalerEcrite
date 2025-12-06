@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PALER ECRITE | THE SYNDICATE</title>
+    <link rel="icon" href="logo.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="antialiased overflow-x-hidden bg-[#050505] text-[#e8e6e1]">
+
+    <!-- LAYERS -->
+    <div class="noise-overlay"></div>
+    <div class="page-transition"></div>
+    <div id="cursor-dot"></div>
+    <div id="cursor-ring"></div>
+
+    <!-- NAV -->
+    <nav class="fixed top-0 w-full px-4 md:px-8 py-6 flex justify-between items-center z-50 mix-blend-exclusion text-white">
+        <a href="index.html" class="text-2xl md:text-3xl font-black tracking-tighter scramble-hover" data-cursor="EXIT">PE.</a>
+        <a href="menu.html" class="text-xs font-bold uppercase tracking-widest font-mono" data-cursor="MENU">[ INDEX ]</a>
+    </nav>
+
+    <main class="min-h-screen pt-32 pb-20 px-4 md:px-12">
+        
+        <!-- HEADER -->
+        <header class="mb-20 border-b border-[#333] pb-8">
+            <h1 class="text-[10vw] leading-[0.85] font-black uppercase text-white reveal">
+                THE<br><span class="text-[#ff3300]">SYNDICATE</span>
+            </h1>
+            <div class="flex justify-between items-end mt-8 font-mono text-xs text-gray-500 font-bold tracking-widest">
+                <span>KNOWN ACCOMPLICES</span>
+                <span id="agent-count">SCANNING...</span>
+            </div>
+        </header>
+
+        <!-- AUTHORS GRID -->
+        <div id="authors-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-[#333] border border-[#333]">
+            <!-- JS INJECTS CARDS HERE -->
+            <div class="p-12 bg-[#050505] text-center font-mono text-xs animate-pulse text-[#ff3300]">
+                DECRYPTING IDENTITIES...
+            </div>
+        </div>
+
+    </main>
+
+    <!-- SCRIPTS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
+    <script src="main.js"></script>
+    <script src="cms.js"></script> <!-- THE BRAIN -->
+    
+    <!-- Initialize -->
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            if(typeof loadAuthors === 'function') loadAuthors();
+        });
+    </script>
+</body>
+</html>
