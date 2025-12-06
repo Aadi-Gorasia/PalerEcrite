@@ -43,18 +43,19 @@
 
             <!-- RIGHT: FORM -->
             <div class="w-full md:w-1/2 p-12 md:p-24 bg-[#e8e6e1] flex flex-col justify-center relative">
-                <form id="submission-form" class="flex flex-col gap-12 max-w-lg">
+                <form id="submission-form" class="flex flex-col gap-12 max-w-lg" action="https://formspree.io/f/xwpgqzvv"
+  method="POST">
                     <div class="input-group">
                         <label class="text-[10px] font-bold tracking-widest text-[#ff3300] mb-2 block">CODENAME</label>
-                        <input type="text" placeholder="Who are you?" data-cursor="TYPE">
+                        <input type="text" name="Author" placeholder="Who are you?" data-cursor="TYPE">
                     </div>
                     <div class="input-group">
                         <label class="text-[10px] font-bold tracking-widest text-[#ff3300] mb-2 block">FREQUENCY</label>
-                        <input type="email" placeholder="Email Address" data-cursor="TYPE">
+                        <input type="email" name="Correspondence" placeholder="Email Address" data-cursor="TYPE">
                     </div>
                     <div class="input-group">
                         <label class="text-[10px] font-bold tracking-widest text-[#ff3300] mb-2 block">THE WORK</label>
-                        <textarea rows="6" placeholder="Paste link or text here" data-cursor="WRITE"></textarea>
+                        <textarea rows="6" name="Work" placeholder="Paste link or text here" data-cursor="WRITE"></textarea>
                     </div>
                     
                     <button type="submit" class="mt-8 text-4xl font-black text-left hover:text-[#ff3300] transition-colors flex items-center gap-4 group" data-cursor="SEND">
