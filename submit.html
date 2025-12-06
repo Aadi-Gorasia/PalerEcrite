@@ -72,19 +72,45 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
     <script src="main.js"></script>
-    <script>
-        document.getElementById('submission-form').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const btn = e.target.querySelector('button');
-            const msg = document.getElementById('success-msg');
+<script>
+        const form = document.getElementById('submission-form');
+        const btn = form.querySelector('button');
+        const msg = document.getElementById('success-msg');
+        const btnTextSpan = btn.querySelector('span:first-child'); // Target the text span
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault(); // Stop page reload
             
-            btn.innerHTML = "UPLOADING...";
-            
-            setTimeout(() => {
-                btn.innerHTML = "SENT";
-                btn.classList.add('text-[#ff3300]');
-                msg.style.opacity = 1;
-            }, 1500);
+            // 1. VISUAL: Loading State
+            btnTextSpan.innerHTML = "UPLOADING...";
+            btn.style.opacity = "0.7";
+
+            // 2. LOGIC: Send to Formspree
+            try {
+                const response = await fetch(form.action, {
+                    method: form.method,
+                    body: new FormData(form),
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    // 3. SUCCESS ANIMATION
+                    btnTextSpan.innerHTML = "SENT";
+                    btn.classList.add('text-[#ff3300]');
+                    msg.style.opacity = 1;
+                    form.reset(); // Clear the form
+                } else {
+                    // SERVER ERROR
+                    btnTextSpan.innerHTML = "ERROR";
+                    alert("Formspree Error. Check your Form ID.");
+                }
+            } catch (error) {
+                // NETWORK ERROR
+                btnTextSpan.innerHTML = "OFFLINE";
+                alert("Submission failed. Check connection.");
+            }
         });
     </script>
 </body>
