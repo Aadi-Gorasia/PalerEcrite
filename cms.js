@@ -35,7 +35,7 @@ async function loadHomeGrid() {
         gridContainer.innerHTML = '';
 
         // Reverse to show newest first, take 5
-        const recent = data.reverse().slice(0, 3); 
+        const recent = data.reverse().slice(0, 5); 
 
         recent.forEach((item) => {
             const html = `
