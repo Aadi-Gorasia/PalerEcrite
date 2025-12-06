@@ -45,7 +45,6 @@ async function loadHomeGrid() {
                 <h4 class="text-3xl md:text-6xl font-black uppercase md:group-hover:translate-x-4 transition-transform duration-300">${item.title}</h4>
                 <div class="flex items-center justify-between w-full md:w-auto mt-4 md:mt-0 gap-4 md:gap-8 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300">
                     <span class="font-mono text-[#ff3300] text-xs">${item.genre}</span>
-                    <span class="font-mono text-xs">${item.author}</span>
                 </div>
             </div>
             `;
