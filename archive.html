@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PALER ECRITE | ARCHIVE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="antialiased overflow-x-hidden bg-[#e8e6e1]">
+
+    <!-- SYSTEM LAYERS -->
+    <div class="noise-overlay"></div>
+    <div class="page-transition"></div>
+    <div id="cursor-dot"></div>
+    <div id="cursor-ring"></div>
+
+    <!-- NAV -->
+    <nav class="fixed top-0 w-full px-4 md:px-8 py-6 flex justify-between items-center z-50 mix-blend-exclusion text-white">
+        <a href="index.html" class="text-2xl md:text-3xl font-black tracking-tighter scramble-hover" data-cursor="HOME">PE.</a>
+        <a href="menu.html" class="text-xs font-bold uppercase tracking-widest font-mono" data-cursor="MENU">[ MENU ]</a>
+    </nav>
+
+    <main class="w-full min-h-screen pt-32 pb-20 px-4 md:px-8">
+        
+        <!-- HEADER -->
+        <header class="mb-20 border-b-4 border-black pb-8 max-w-7xl mx-auto">
+            <h1 class="text-[10vw] md:text-[8vw] leading-none font-black uppercase text-[#050505] reveal">
+                FULL<br><span class="text-[#ff3300]">INDEX</span>
+            </h1>
+            <div class="flex justify-between items-end mt-4 font-mono text-xs font-bold">
+                <span>DATABASE STATUS: UNLOCKED</span>
+                <span id="total-count">COUNT: 0</span>
+            </div>
+        </header>
+
+        <!-- THE LIST HEADER (Desktop Only) -->
+        <div class="max-w-7xl mx-auto hidden md:grid grid-cols-12 gap-4 pb-4 border-b border-black font-mono text-[10px] font-bold text-gray-500 tracking-widest">
+            <div class="col-span-1">ID</div>
+            <div class="col-span-6">TITLE</div>
+            <div class="col-span-2">GENRE</div>
+            <div class="col-span-2">AUTHOR</div>
+            <div class="col-span-1 text-right">DATE</div>
+        </div>
+
+        <!-- THE ARCHIVE CONTAINER -->
+        <div id="archive-list" class="max-w-7xl mx-auto flex flex-col">
+            <!-- Items inject here via JS -->
+            <div class="py-20 text-center font-mono animate-pulse">LOADING ARCHIVE...</div>
+        </div>
+
+    </main>
+
+    <!-- SCRIPTS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
+    <script src="main.js"></script>
+    <script src="cms.js"></script>
+</body>
+</html>

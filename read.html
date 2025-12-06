@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PALER ECRITE | LOADING...</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* --- POETRY MODE OVERRIDES --- */
+.poetry-mode {
+    text-align: center !important;
+    max-width: 600px !important; /* Make poems narrower */
+    margin: 0 auto !important;
+}
+
+/* Reset the Giant Letter for Poetry (It looks bad centered) */
+.poetry-mode p:first-of-type::first-letter {
+    float: none !important;
+    font-size: inherit !important;
+    line-height: inherit !important;
+    margin-right: 0 !important;
+    color: inherit !important;
+}
+        /* READER TYPOGRAPHY */
+        .prose p { margin-bottom: 1.5rem; line-height: 1.6; font-size: 1.1rem; }
+        .prose p:first-of-type::first-letter {
+            float: left; font-size: 5rem; line-height: 0.8; font-weight: 900; margin-right: 1rem; color: #ff3300; font-family: 'Syne', sans-serif;
+        }
+        .prose blockquote {
+            border-left: 4px solid #ff3300; padding-left: 1.5rem; font-style: italic; font-family: 'Cinzel', serif; font-size: 1.5rem; margin: 2rem 0; color: #666; background: #e8e6e1; padding: 20px;
+        }
+        .prose strong { color: #ff3300; font-weight: 900; }
+        .prose ul { list-style-type: square; padding-left: 20px; margin-bottom: 20px; color: #ff3300; }
+        .prose li span { color: black; }
+        
+        /* SCROLL PROGRESS */
+        #burn-line { position: fixed; top: 0; left: 0; height: 4px; background: #ff3300; width: 0%; z-index: 9999; }
+        
+        /* LOADING STATE */
+        #loader { position: fixed; inset: 0; background: #e8e6e1; z-index: 50; display: flex; align-items: center; justify-content: center; }
+        #content-wrapper { opacity: 0; transition: opacity 0.5s; }
+    </style>
+</head>
+<body class="antialiased overflow-x-hidden bg-[#e8e6e1]">
+
+    <!-- SYSTEM LAYERS -->
+    <div class="noise-overlay"></div>
+    <div id="cursor-dot"></div>
+    <div id="cursor-ring"></div>
+    <div id="burn-line"></div>
+
+    <!-- LOADER (Hides everything until data arrives) -->
+    <div id="loader">
+        <div class="text-center">
+            <div class="text-[10vw] font-black animate-pulse text-[#ff3300]">LOADING</div>
+            <div class="font-mono text-xs">DECRYPTING SIGNAL...</div>
+        </div>
+    </div>
+
+    <!-- CONTENT WRAPPER (Fade in on load) -->
+    <div id="content-wrapper">
+
+        <!-- NAV -->
+        <nav class="fixed top-0 w-full px-4 md:px-8 py-6 flex justify-between items-center z-50 mix-blend-exclusion text-white">
+            <a href="index.html" class="text-2xl md:text-3xl font-black tracking-tighter scramble-hover" data-cursor="EXIT">PE.</a>
+            <a href="archive.html" class="text-xs font-bold uppercase tracking-widest font-mono" data-cursor="INDEX">[ ARCHIVE ]</a>
+        </nav>
+
+        <main class="w-full min-h-screen pt-32 pb-20 relative">
+            
+            <!-- HEADER -->
+            <header class="px-4 md:px-12 mb-20 border-b-2 border-black pb-12">
+                <div class="flex flex-col md:flex-row justify-between items-end mb-4">
+                    <span id="meta-genre" class="font-mono text-[#ff3300] text-xs font-bold tracking-widest mb-2 md:mb-0">...</span>
+                    <span class="font-mono text-xs font-bold tracking-widest">VERIFIED ENTRY</span>
+                </div>
+                <h1 id="article-title" class="text-[12vw] leading-[0.85] font-black uppercase text-[#050505] break-words reveal">
+                    ...
+                </h1>
+            </header>
+
+            <!-- THE READER GRID -->
+            <div class="max-w-[95vw] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 relative">
+                
+                <!-- SIDEBAR METADATA -->
+                <aside class="lg:col-span-4 relative">
+                    <div class="sticky top-32 flex flex-col gap-8">
+                        <div class="border-t border-black pt-4">
+                            <span class="block text-[10px] font-bold tracking-widest text-gray-500 mb-2">AUTHOR ID</span>
+                            <h2 id="meta-author" class="text-4xl md:text-5xl font-serif italic text-[#ff3300] leading-tight">...</h2>
+                        </div>
+                        
+                        <div class="border-t border-black pt-4">
+                            <span class="block text-[10px] font-bold tracking-widest text-gray-500 mb-2">TIMESTAMP</span>
+                            <p id="meta-date" class="font-mono font-bold text-xl">...</p>
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- THE TEXT -->
+                <article class="lg:col-span-8 lg:pr-20">
+                    <div id="article-body" class="prose font-serif text-[#050505] max-w-3xl reveal text-lg">
+                        <!-- JS INJECTS TEXT HERE -->
+                    </div>
+
+                    <div class="mt-20 flex items-center gap-4 opacity-50">
+                        <div class="h-px w-20 bg-black"></div>
+                        <span class="font-mono text-xs font-bold">END OF TRANSMISSION</span>
+                        <div class="h-px w-20 bg-black"></div>
+                    </div>
+                </article>
+            </div>
+        </main>
+
+        <!-- FOOTER / NEXT -->
+        <section class="border-t-2 border-black bg-[#050505] text-[#e8e6e1] py-20 px-4 md:px-12 hover:bg-[#ff3300] hover:text-black transition-colors duration-500 group cursor-pointer" onclick="window.location='archive.html'" data-cursor="NEXT">
+            <div class="flex justify-between items-end">
+                <div>
+                    <span class="font-mono text-xs font-bold tracking-widest block mb-4">SYSTEM</span>
+                    <h2 class="text-[8vw] font-black leading-none uppercase group-hover:translate-x-4 transition-transform duration-500">
+                        RETURN TO<br>ARCHIVE
+                    </h2>
+                </div>
+                <span class="text-4xl md:text-8xl font-black group-hover:-rotate-45 transition-transform duration-500">→</span>
+            </div>
+        </section>
+    </div>
+
+    <!-- SCRIPTS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
+    <script src="main.js"></script>
+    
+    <!-- IMPORTANT: Must include your Cloud Keys in cms.js -->
+    <script src="cms.js"></script>
+
+    <!-- PAGE SPECIFIC: LOADER & SCROLL -->
+    <script>
+        // Scroll Bar
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById("burn-line").style.width = scrolled + "%";
+        });
+    </script>
+</body>
+</html>

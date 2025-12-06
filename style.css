@@ -125,3 +125,15 @@ html.lenis, html.lenis body { height: auto; }
 @media (max-width: 768px) {
     body::before { background-size: 10px 10px; }
 }
+
+/* Ensure strong/bold text in the reader pops */
+.prose strong {
+    font-weight: 900;
+    color: var(--accent);
+}
+
+/* Make selection aggressive */
+::selection {
+    background: var(--accent); /* Red Background */
+    color: black;              /* Black Text */
+}

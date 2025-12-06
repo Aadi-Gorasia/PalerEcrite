@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PALER ECRITE | LOCKED</title>
+    
+    <!-- FONTS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Syne:wght@700;800&family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- TAILWIND -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- QUILL EDITOR -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+
+    <style>
+        /* --- GLOBAL OVERRIDES --- */
+        body {
+            background-color: #050505; color: #e8e6e1;
+            font-family: 'Space Grotesk', monospace; cursor: auto !important;
+            overflow: hidden;
+        }
+
+        /* SECURITY GATE (THE LOCK) */
+        #security-gate {
+            position: fixed; inset: 0; background: #000; z-index: 9999;
+            display: flex; align-items: center; justify-content: center; flex-direction: column;
+        }
+        #security-input {
+            background: transparent; border: 2px solid #333; color: #ff3300;
+            padding: 15px; font-size: 2rem; text-align: center;
+            outline: none; font-family: 'Space Grotesk', monospace;
+            text-transform: uppercase; letter-spacing: 5px; width: 300px;
+            transition: 0.3s;
+        }
+        #security-input:focus { border-color: #ff3300; box-shadow: 0 0 20px #ff3300; }
+        .shake { animation: shake 0.5s; }
+        @keyframes shake { 0% { transform: translateX(0); } 25% { transform: translateX(-10px); } 75% { transform: translateX(10px); } 100% { transform: translateX(0); } }
+
+        /* NOISE TEXTURE */
+        .noise {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; opacity: 0.05; z-index: 0;
+            background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyBAMAAADsEZWCAAAAGFBMVEUAAAA5OTkAAABMTExERERmZmYzMzMyMjJlRPOqAAAACHRSTlMAMwAozDt3VH1g748AAABcSURBVDjLY2AYBaNgKLNt27ZGZxD227ZtmzVDMO737NlzDCNF9uzZczQjRfbQ0NBjDCPl0NDQY0hGgbyhoSEQIzQ0NIQRQo2gAmYgRjZCaGgoI0V2KChkGCkAAA21Th3XU61eAAAAAElFTkSuQmCC');
+        }
+
+        /* --- EDITOR STYLES --- */
+        input.editor-inp {
+            background: transparent !important; border: none; border-bottom: 2px solid #333;
+            color: white !important; padding: 10px 0; font-family: 'Space Grotesk', monospace;
+            font-size: 1.1rem; width: 100%; outline: none; transition: all 0.3s;
+            -webkit-text-fill-color: white !important;
+            box-shadow: 0 0 0px 1000px #0a0a0a inset !important;
+        }
+        input.editor-inp:focus { border-bottom-color: #ff3300; box-shadow: 0 0 0px 1000px #000 inset !important; }
+        
+        label { font-size: 0.65rem; font-weight: 800; color: #666; text-transform: uppercase; letter-spacing: 2px; display: block; margin-bottom: 4px; }
+
+        .story-item { padding: 20px; border-bottom: 1px solid #222; cursor: pointer; transition: all 0.2s; position: relative; }
+        .story-item:hover { background: #111; }
+        .story-item.active { background: #ff3300; }
+        .story-item.active div { color: black !important; } 
+
+        .ql-toolbar { background: #e8e6e1; border: none !important; font-family: 'Space Grotesk', monospace; }
+        .ql-container { background: #e8e6e1; border: none !important; color: black; font-family: 'Cinzel', serif; font-size: 1.2rem; height: 50vh; }
+        .ql-editor { padding: 40px; }
+        .ql-editor strong { color: #ff3300; font-weight: 900; }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #050505; }
+        ::-webkit-scrollbar-thumb { background: #333; }
+        ::-webkit-scrollbar-thumb:hover { background: #ff3300; }
+    </style>
+</head>
+<body class="flex flex-col h-screen overflow-hidden selection:bg-[#ff3300] selection:text-black">
+    
+    <!-- SECURITY GATE -->
+    <div id="security-gate">
+        <div class="mb-8 text-center">
+            <h1 class="text-4xl font-black text-white mb-2 tracking-tighter">RESTRICTED AREA</h1>
+            <p class="text-xs text-gray-500 font-mono">ENTER AUTHORIZATION CODE</p>
+        </div>
+        <input type="password" id="security-input" placeholder="••••" autofocus>
+        <div id="error-msg" class="text-[#ff3300] font-mono text-xs mt-4 opacity-0">ACCESS DENIED</div>
+    </div>
+
+    <!-- APP CONTENT (HIDDEN BY DEFAULT) -->
+    <div id="app-layer" class="flex flex-col h-screen opacity-0 transition-opacity duration-1000">
+        
+        <div class="noise"></div>
+
+        <!-- HEADER -->
+        <header class="h-16 border-b border-[#222] flex items-center justify-between px-6 shrink-0 relative z-10 bg-[#050505]">
+            <div class="flex items-center gap-4">
+                <div class="w-3 h-3 bg-[#ff3300] animate-pulse rounded-full"></div>
+                <span class="text-white font-black text-xl tracking-tighter font-['Syne']">CONSOLE.</span>
+            </div>
+            <div class="flex gap-4">
+                <button id="btn-download" onclick="downloadDB()" class="text-xs font-bold text-gray-400 border border-[#333] px-4 py-2 hover:text-white hover:border-white transition-colors flex items-center gap-2">
+                    <span>BACKUP_JSON</span>
+                    <span>↓</span>
+                </button>
+                <a href="index.html" target="_blank" class="text-xs font-bold bg-[#333] px-4 py-2 hover:bg-white hover:text-black transition-all">EXIT</a>
+            </div>
+        </header>
+
+        <!-- WORKSPACE -->
+        <div class="flex flex-1 overflow-hidden relative z-10">
+            <!-- SIDEBAR -->
+            <aside class="w-1/4 min-w-[250px] border-r border-[#222] flex flex-col bg-[#050505]">
+                <button onclick="createNew()" class="p-6 border-b border-[#222] text-left hover:bg-[#111] group transition-colors">
+                    <span class="block text-xs font-bold text-[#ff3300] mb-1 group-hover:translate-x-1 transition-transform">+ NEW ENTRY</span>
+                    <span class="text-2xl font-black text-white group-hover:text-gray-300">CREATE</span>
+                </button>
+                <div id="story-list" class="overflow-y-auto flex-1"></div>
+            </aside>
+
+            <!-- MAIN EDITOR AREA -->
+            <main class="w-3/4 flex-1 bg-[#0a0a0a] overflow-y-auto p-12">
+                <div class="max-w-5xl mx-auto flex flex-col gap-10">
+                    <div class="grid grid-cols-12 gap-8 items-end">
+                        <div class="col-span-8">
+                            <label>TRANSMISSION TITLE</label>
+                            <input type="text" id="inp-title" placeholder="UNTITLED SIGNAL" class="editor-inp text-3xl font-bold">
+                        </div>
+                        <div class="col-span-4">
+                            <label>AUTHOR ID</label>
+                            <input type="text" id="inp-author" placeholder="UNKNOWN" class="editor-inp">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-3 gap-8">
+                        <div><label>TIMESTAMP</label><input type="text" id="inp-date" placeholder="MMM DD, YYYY" class="editor-inp"></div>
+                        <div><label>CLASSIFICATION</label><input type="text" id="inp-genre" placeholder="POETRY / ESSAY" class="editor-inp"></div>
+                        <div><label>COVER ASSET (URL)</label><input type="text" id="inp-image" placeholder="HTTPS://..." class="editor-inp"></div>
+                    </div>
+                    <div class="relative group">
+                        <label class="mb-2 block">MANUSCRIPT CONTENT</label>
+                        <div class="border-l-4 border-[#ff3300]"><div id="editor-container"></div></div>
+                    </div>
+                    <div class="pt-8 pb-20 flex justify-between items-center">
+                        <button onclick="deleteCurrent()" class="text-xs font-bold text-red-900 hover:text-red-500 hover:underline">DELETE PERMANENTLY</button>
+                        <div class="flex items-center gap-4">
+                            <span id="save-status" class="text-xs font-mono text-[#ff3300] opacity-0 transition-opacity">SAVED TO MEMORY. DOWNLOAD NOW →</span>
+                            <input type="hidden" id="inp-id">
+                            <button onclick="saveCurrentStory()" class="bg-white text-black text-xl font-black px-8 py-4 hover:bg-[#ff3300] hover:scale-105 transition-all shadow-[4px_4px_0px_#222]">SAVE ENTRY</button>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- LOGIC -->
+    <script>
+        // --- 1. CONFIGURATION ---
+        const BIN_ID = '6933f55743b1c97be9db5c65'; 
+        const API_KEY = '$2a$10$69IbQEJwSHx/6v52kYQ//OHyqt0UzBNAeBwgWwibdgasZgdYGsaEa';
+        const PASSWORD = 'PASSWORD'; // << CHANGE THIS PASSWORD
+        // ------------------------
+
+        // --- 2. SECURITY GATE LOGIC ---
+        const gate = document.getElementById('security-gate');
+        const passInput = document.getElementById('security-input');
+        const app = document.getElementById('app-layer');
+
+        // Check if already logged in this session
+        if(sessionStorage.getItem('auth') === 'true') {
+            unlock();
+        }
+
+        passInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') checkPassword();
+        });
+
+        function checkPassword() {
+            if(passInput.value === PASSWORD) {
+                sessionStorage.setItem('auth', 'true');
+                unlock();
+            } else {
+                // Shake animation for wrong password
+                passInput.classList.add('shake');
+                document.getElementById('error-msg').style.opacity = 1;
+                setTimeout(() => passInput.classList.remove('shake'), 500);
+            }
+        }
+
+        function unlock() {
+            gate.style.opacity = '0';
+            setTimeout(() => {
+                gate.style.display = 'none';
+                app.style.opacity = '1';
+                loadDB(); // Only load data after unlock
+            }, 500);
+            document.title = "PALER ECRITE | CONSOLE";
+        }
+
+
+        // --- 3. EDITOR LOGIC ---
+        const DB_URL = `https://api.jsonbin.io/v3/b/${BIN_ID}`;
+        let db = [];
+
+        const quill = new Quill('#editor-container', {
+            theme: 'snow',
+            placeholder: 'Type your manifesto here...',
+            modules: { toolbar: [[{ 'header': [1, 2, false] }], ['bold', 'italic', 'underline', 'blockquote'], [{ 'list': 'ordered'}, { 'list': 'bullet' }], ['clean']] }
+        });
+
+        async function loadDB() {
+            try {
+                const res = await fetch(DB_URL + "/latest", { headers: { 'X-Master-Key': API_KEY } });
+                const json = await res.json();
+                db = json.record;
+                renderList();
+                if (Array.isArray(db) && db.length > 0) loadStoryIntoForm(db[0].id);
+                else createNew();
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        function renderList() {
+            const list = document.getElementById('story-list');
+            list.innerHTML = '';
+            db.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'story-item';
+                div.innerHTML = `<div class="font-bold text-sm tracking-wider uppercase truncate text-white">${item.title || 'VOID'}</div><div class="date text-[10px] font-mono text-gray-500 mt-1">${item.date || 'NO DATE'}</div>`;
+                div.onclick = () => loadStoryIntoForm(item.id);
+                if(document.getElementById('inp-id').value === item.id) div.classList.add('active');
+                list.appendChild(div);
+            });
+        }
+
+        function loadStoryIntoForm(id) {
+            const item = db.find(x => x.id === id);
+            if(!item) return;
+            document.getElementById('inp-id').value = item.id;
+            document.getElementById('inp-title').value = item.title;
+            document.getElementById('inp-author').value = item.author;
+            document.getElementById('inp-date').value = item.date;
+            document.getElementById('inp-genre').value = item.genre;
+            document.getElementById('inp-image').value = item.image;
+            quill.root.innerHTML = item.body;
+            renderList(); 
+        }
+
+        function createNew() {
+            const newId = 'entry-' + Date.now();
+            document.getElementById('inp-id').value = newId;
+            document.getElementById('inp-title').value = "";
+            document.getElementById('inp-author').value = "";
+            document.getElementById('inp-date').value = "";
+            document.getElementById('inp-genre').value = "";
+            document.getElementById('inp-image').value = "";
+            quill.root.innerHTML = "";
+            document.getElementById('inp-title').focus();
+            document.querySelectorAll('.story-item').forEach(el => el.classList.remove('active'));
+        }
+
+        async function saveCurrentStory() {
+            const id = document.getElementById('inp-id').value;
+            if(!id) return alert("Error: No ID");
+            const btn = document.querySelector('button[onclick="saveCurrentStory()"]');
+            const oldText = btn.innerText;
+            btn.innerText = "UPLOADING..."; btn.style.backgroundColor = "#fff";
+
+            const newItem = {
+                id: id,
+                title: document.getElementById('inp-title').value,
+                author: document.getElementById('inp-author').value,
+                date: document.getElementById('inp-date').value,
+                genre: document.getElementById('inp-genre').value,
+                image: document.getElementById('inp-image').value,
+                body: quill.root.innerHTML
+            };
+
+            const index = db.findIndex(x => x.id === id);
+            if(index >= 0) db[index] = newItem; else db.push(newItem);
+
+            try {
+                await fetch(DB_URL, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json', 'X-Master-Key': API_KEY },
+                    body: JSON.stringify(db)
+                });
+                renderList();
+                btn.innerText = "UPLOADED ✓"; btn.style.backgroundColor = "#ff3300";
+                setTimeout(() => { btn.innerText = oldText; btn.style.backgroundColor = "white"; }, 2000);
+            } catch(e) { alert("UPLOAD FAILED"); btn.innerText = "ERROR"; }
+        }
+
+        async function deleteCurrent() {
+            const id = document.getElementById('inp-id').value;
+            if(confirm("DELETE FROM CLOUD PERMANENTLY?")) {
+                db = db.filter(x => x.id !== id);
+                await fetch(DB_URL, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json', 'X-Master-Key': API_KEY },
+                    body: JSON.stringify(db)
+                });
+                renderList(); createNew();
+            }
+        }
+
+        function downloadDB() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(db, null, 4));
+            const node = document.createElement('a');
+            node.setAttribute("href", dataStr); node.setAttribute("download", "database.json");
+            document.body.appendChild(node); node.click(); node.remove();
+        }
+    </script>
+</body>
+</html>

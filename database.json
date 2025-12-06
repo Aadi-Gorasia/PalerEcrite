@@ -1,0 +1,20 @@
+[
+    {
+        "id": "static-noise",
+        "title": "STATIC NOISE",
+        "author": "UNKNOWN SOLDIER",
+        "date": "FEB 24, 2025",
+        "genre": "POETRY",
+        "image": "https://images.unsplash.com/photo-1516979187457-637abb4f9353?q=80&w=300",
+        "body": "<p>The city doesn't sleep; it just buffers. We are caught in the latency between the thought and the action.</p><p>Yesterday, I bought a physical book. It felt heavy, like a brick or a dead bird.</p><blockquote>'We trade our silence for bandwidth.'</blockquote><p>Stop looking for the ending.</p>"
+    },
+    {
+        "id": "death-syntax",
+        "title": "DEATH OF SYNTAX",
+        "author": "A.J. VOID",
+        "date": "MAR 01, 2025",
+        "genre": "ESSAY",
+        "image": "https://images.unsplash.com/photo-1497005367839-6e852de72767?q=80&w=300",
+        "body": "<p>Grammar is a cage. We broke the bars long ago.</p><p>This is a test of the emergency broadcast system. This is only a test.</p>"
+    }
+]
