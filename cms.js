@@ -35,7 +35,7 @@ async function loadHomeGrid() {
         gridContainer.innerHTML = '';
 
         // Reverse to show newest first, take 5
-        const recent = data.reverse().slice(0, 5); 
+        const recent = data.reverse().slice(0, 3); 
 
         recent.forEach((item) => {
             const html = `
@@ -45,7 +45,7 @@ async function loadHomeGrid() {
                 <h4 class="text-3xl md:text-6xl font-black uppercase md:group-hover:translate-x-4 transition-transform duration-300">${item.title}</h4>
                 <div class="flex items-center justify-between w-full md:w-auto mt-4 md:mt-0 gap-4 md:gap-8 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300">
                     <span class="font-mono text-[#ff3300] text-xs">${item.genre}</span>
-                    <img src="${item.image}" class="h-16 w-32 md:h-24 md:w-48 object-cover grayscale">
+                    <span class="font-mono text-xs">${item.author}</span>
                 </div>
             </div>
             `;
